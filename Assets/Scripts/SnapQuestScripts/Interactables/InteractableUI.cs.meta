@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: be790ff652331de4686bfa24f856f242
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - InteractableImage: {instanceID: 0}
+  - Text: {instanceID: 0}
+  - ChatSprite: {fileID: 21300000, guid: dcbdd7d5469d30849be91f477777e314, type: 3}
+  - PickUpSprite: {fileID: 21300000, guid: 7c599a5ba961f364bb4f4217467c8fee, type: 3}
+  - LookSprite: {fileID: 21300000, guid: 7fc7ef247d4463745832cc3fd9aeabaf, type: 3}
+  - TouchSprite: {fileID: 21300000, guid: 7c599a5ba961f364bb4f4217467c8fee, type: 3}
+  - OtherSprite: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
