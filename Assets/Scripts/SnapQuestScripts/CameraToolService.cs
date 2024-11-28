@@ -33,6 +33,7 @@ namespace Code.CameraTool
 
         public bool UsingCameraTool;
         public PlayerInput PlayerInput;
+        // public InputAction PlayerInput;
         public CameraToolUI CameraToolUI;
         public NotableObjectService NotableObjectService;
 
@@ -44,6 +45,7 @@ namespace Code.CameraTool
         private void Start()
         {
             PlayerInput.actions["CameraTool"].started += ToggleCameraTool;
+            PlayerInput.actions["TakePicture"].started += TakePictureInputHandler;
             var lookAction = PlayerInput.actions["Look"];
             lookAction.performed += LookVectorListener;
             
@@ -123,7 +125,6 @@ namespace Code.CameraTool
 
             Cursor.lockState = CursorLockMode.Locked;
             UsingCameraTool = true;
-            PlayerInput.actions["TakePicture"].started += TakePictureInputHandler;
             CameraToolUI.RequestEnableUI();
             return true;
         }
@@ -138,7 +139,6 @@ namespace Code.CameraTool
             CameraToolUI.DisableUI();
             UsingCameraTool = false;
             
-            PlayerInput.actions["TakePicture"].started -= TakePictureInputHandler;
             
             // TPCharacterCamera.Activate();
             // CameraToolRenderCamera.Deactivate();
@@ -386,7 +386,8 @@ namespace Code.CameraTool
 
         private void TakePictureInputHandler(InputAction.CallbackContext context)
         {
-            TakePicture();
+            if(CameraToolUI.RootNode.activeSelf)
+                TakePicture();
         }
 
         public static float GetCameraFOVMultiplierForZoom(float zoom)

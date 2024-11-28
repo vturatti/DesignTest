@@ -33,3 +33,6 @@ MonoBehaviour:
     variableCategoryIDs: 
   events:
   - Captured
+  - StartInteract
+  - Key2Found
+  - Key1Found
