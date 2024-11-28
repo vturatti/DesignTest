@@ -3586,7 +3586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IconToDisplay: {fileID: 21300000, guid: 510275c74299e69408cdcb83da63590a, type: 3}
-  TextToDisplay: Touch To Win
+  TextToDisplay: '[F] To Win'
   InteractDistance: 1.25
   IsInteractableOnStart: 1
   IsInteractable: 0
