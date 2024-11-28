@@ -9,27 +9,19 @@ public class BaseInteractable : MonoBehaviour, IInteractable
     public string TextToDisplay;
     public float InteractDistance = 1.25f;
     public bool IsInteractableOnStart = true;
-    public bool ExemptFromOutline;
+    [HideInInspector]
     public bool IsInteractable;
-    public CinemachineVirtualCamera VirtualCamera;
     public PlayMakerFSM EventListenerFsm;
 
     // does not actually use this position directly,
     // but rather averages player and this to get a mid position
-    public Transform InteractCameraFocusPosition;
-
     public List<Outline> Outlines = new();
-    private CinemachineVirtualCamera tempVcamForInteraction_;
 
-    public InteractableDetector InteractableDetector;
-    public InteractionManager InteractionManager;
+    private InteractableDetector InteractableDetector;
+    private InteractionManager InteractionManager;
     private void Awake()
     {
         IsInteractable = IsInteractableOnStart;
-        if (VirtualCamera != null)
-        {
-            VirtualCamera.enabled = false;
-        }
 
         if (EventListenerFsm == null)
         {
@@ -39,13 +31,8 @@ public class BaseInteractable : MonoBehaviour, IInteractable
 
     protected void Start()
     {
-        if (Outlines.Count == 0 && !ExemptFromOutline)
-        {
-            Debug.LogWarning(
-                $"WARNING!!!. The interactable object {name} has no outline object. If you dont want an outline on an interactable, ensure that you set ExemptFromOutline to true."
-            );
-        }
-
+        InteractionManager = GameObject.FindWithTag("GameMain").GetComponent<InteractionManager>();
+        InteractableDetector = GameObject.FindWithTag("GameMain").GetComponent<InteractableDetector>();
         DisableAllOutlines();
         gameObject.layer = LayerMask.NameToLayer("Interactable");
         InteractableDetector.RegisterInteractableObject(this, transform);
@@ -63,7 +50,8 @@ public class BaseInteractable : MonoBehaviour, IInteractable
 
     private void OnEnable()
     {
-        InteractableDetector.RegisterInteractableObject(this, transform);
+        if(InteractableDetector != null)
+            InteractableDetector.RegisterInteractableObject(this, transform);
     }
 
     //this is called by the interaction Manager ONLY
@@ -88,11 +76,6 @@ public class BaseInteractable : MonoBehaviour, IInteractable
             return;
         }
         InteractionManager.EndInteraction();
-        if (VirtualCamera != null)
-        {
-            VirtualCamera.enabled = false;
-            VirtualCamera.Priority = 0;
-        }
     }
 
     public void UpdateFSMForEventListening(PlayMakerFSM fsm)

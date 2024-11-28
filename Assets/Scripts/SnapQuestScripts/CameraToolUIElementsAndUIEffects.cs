@@ -70,10 +70,6 @@ namespace Code.CameraTool
             else
             {
                 var txt = notableObject.DisplayName;
-                if (notableObject.GetCurrentActionState() != ActionState.NoneOrDefault)
-                {
-                    txt += "\n<size=75%>" + notableObject.GetCurrentActionState().ToString().ToLower() + "</size>";
-                }
 
                 cameraToolUI_.CameraToolCrosshair.color =
                     isKnownActionState ? new Color(0.88f, 0.6f, 0.27f, 0.35f) : new Color(0.61f, 1f, 0.22f, 0.35f);

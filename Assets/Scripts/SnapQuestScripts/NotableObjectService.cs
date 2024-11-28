@@ -122,20 +122,6 @@ namespace Code.CameraTool
                 {
                     return null;
                 }
-
-                if (notableObject.MustBeVisiblePoints != null && notableObject.MustBeVisiblePoints.Count > 0)
-                {
-                    //check to see if all its required visible points are in fact visible
-                    var isFullyVisible = CheckMustBeVisiblePointsAreVisibleAndInFrustum(
-                        MainCamera.transform.position,
-                        notableObject,
-                        GeometryUtility.CalculateFrustumPlanes(MainCamera).ToList()
-                    );
-                    if (!isFullyVisible)
-                    {
-                        notableObject = null;
-                    }
-                }
             }
 
             return notableObject;
@@ -225,18 +211,6 @@ namespace Code.CameraTool
                 }
             }
 
-            //for each point on the bounding box:
-            // foreach (var boundingPosition in notableObject.GetBoundingPositions())
-            // {
-            //     if (PointIsInViewOfCameraFrustums(cameraFrustumPlanes, boundingPosition) &&
-            //         NotableObjectBoundPointHasDirectLineOfSightToCameraBackPlane(
-            //             GameMain.I.MainCamera.transform.position,
-            //             notableObject))
-            //     {
-            //         return true;
-            //     }
-            // }
-
             return false;
         }
 
@@ -248,13 +222,6 @@ namespace Code.CameraTool
             List<Plane> cameraFrustumPlanes)
         {
             //if the notable object has points that must be visible, then lets use that as well after we do a direct cast
-
-            // Check must unobstructed visible points
-            if (!CheckMustBeVisiblePointsAreVisibleAndInFrustum(cameraPos, notableObject, cameraFrustumPlanes))
-            {
-                return false;
-            }
-
             if (Physics.Linecast(
                 cameraPos,
                 boundsInView.center,
@@ -276,48 +243,7 @@ namespace Code.CameraTool
             //else we hit nothing, even the object we are checking, the collider is not wrapped right
             return true;
         }
-
-        private static bool CheckMustBeVisiblePointsAreVisibleAndInFrustum(
-            Vector3 cameraPos,
-            NotableObject notableObject,
-            List<Plane> frustumPlanes)
-        {
-            foreach (var point in notableObject.MustBeVisiblePoints)
-            {
-                //first check if its in the cameras view
-                if (!PointIsInViewOfCameraFrustums(frustumPlanes, point.position))
-                {
-                    //required point is not in view
-                    return false;
-                }
-
-                if (Physics.Linecast(
-                    point.position,
-                    cameraPos,
-                    out var hitMustSeePoint,
-                    PhysicsLayerManager.GetCameraNotableObjectIgnoreLayerMask(),
-                    QueryTriggerInteraction.Ignore
-                ))
-                {
-                    //if the thing we hit has a notable object component, lets check to ensure it matches,
-                    //otherwise we hit something that is not 
-                    if (hitMustSeePoint.collider.gameObject.TryGetComponent<NotableObject>(out var hitNotableObject))
-                    {
-                        if (hitNotableObject != notableObject)
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
+        
         private static bool PointIsInViewOfCameraFrustums(List<Plane> cameraFrustumPlanes, Vector3 position)
         {
             // check each plane of the camera and insure - distance.
@@ -330,16 +256,6 @@ namespace Code.CameraTool
             }
 
             return true;
-        }
-
-        public List<NotableObject> GetNotableObjects(string name)
-        {
-            return notableObjectsInScene_.FindAll(no => no.ObjectName == name);
-        }
-
-        public List<NotableObject> GetNotableObjects(NotableObjectTag tag)
-        {
-            return notableObjectsInScene_.FindAll(no => no.tags.Contains(tag));
         }
 
         public void RegisterSceneNotableObject(NotableObject notableObject)

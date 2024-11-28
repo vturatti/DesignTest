@@ -46,8 +46,7 @@ namespace Code.CameraTool
         {
             PlayerInput.actions["CameraTool"].started += ToggleCameraTool;
             PlayerInput.actions["TakePicture"].started += TakePictureInputHandler;
-            var lookAction = PlayerInput.actions["Look"];
-            lookAction.performed += LookVectorListener;
+            PlayerInput.actions["Look"].performed += LookVectorListener;
             
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -83,6 +82,10 @@ namespace Code.CameraTool
             
 
             // minus for invert, + for non
+            if (CameraToolVcamCamera == null)
+            {
+                return;
+            }
             var currentX = CameraToolVcamCamera.transform.localRotation.eulerAngles.x;
             currentX -= moveDistance.y;
 
@@ -164,12 +167,7 @@ namespace Code.CameraTool
             {
                 var nameActionText =
                     $"{mostNotable.DisplayName}";
-
-                if (mostNotable.GetCurrentActionState() != ActionState.NoneOrDefault)
-                {
-                    nameActionText += $" - {mostNotable.GetCurrentActionState().ToString().ToLower()}";
-                }
-
+                
                 mostNotable.SendCapturedEvent();
             }
         }
@@ -180,7 +178,7 @@ namespace Code.CameraTool
             foreach (var notableObject in NotableObjectService.ReturnAllNotableObjectsInPictureOrNull())
             {
                 notableObjectDebug +=
-                    $" there is a {notableObject.DisplayName} in the photo with tags {string.Join(",", notableObject.tags)} and in the action state of {notableObject.GetCurrentActionState()}\n";
+                    $" there is a {notableObject.DisplayName} in the photo with tags {string.Join(",", notableObject.tags)}\n";
                 detectedNotableObjects.Add(notableObject);
             }
 

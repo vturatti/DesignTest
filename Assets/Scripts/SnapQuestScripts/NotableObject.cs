@@ -9,11 +9,8 @@ public class NotableObject : MonoBehaviour
 {
     public List<NotableObjectTag> tags;
     public string DisplayName;
-    public TextMeshProUGUI DisplayFont;
-    public string ObjectName;
     public bool IsCurrentlyDetectable = true;
     public float MaxDistanceDetectableZoomDistanceMultiplier = 1;
-    public BaseCameraFocusReactor BaseCameraFocusReactor;
     private NotableObjectService NotableObjectService;
 
     public List<Collider> CameraTargetColliders = new ();
@@ -22,13 +19,7 @@ public class NotableObject : MonoBehaviour
         "These points must ALL be visible for the camera to count it as detecting notable object" +
         "\nIf null we use a straight ray from camera to try to hit collider"
     )]
-    public List<Transform> MustBeVisiblePoints = new ();
-
-    public ActionState ActionState = ActionState.NoneOrDefault;
     private Collider collider_;
-    public Dictionary<string, string> ExtraData;
-    public bool DontSaveScreenshotOnPictureTaken;
-
     public PlayMakerFSM LinkedFSM;
 
     public void Awake()
@@ -57,17 +48,6 @@ public class NotableObject : MonoBehaviour
     public void OnDestroy()
     {
         NotableObjectService.UnregisterSceneNotableObject(this);
-    }
-
-    //called through PM
-    public void SetCurrentActionState(ActionState newState)
-    {
-        ActionState = newState;
-    }
-
-    public ActionState GetCurrentActionState()
-    {
-        return ActionState;
     }
 
     public void ToggleCurrentlyDetectable(bool enableNotableObject)

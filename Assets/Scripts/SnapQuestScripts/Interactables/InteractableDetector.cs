@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +10,13 @@ namespace Code.Interactables
         public Transform PlayerRoot;
         public Transform PlayerFeet;
         public Vector3 verticalSquishInteractableDistance = new(1, .5f, 1);
-        public InteractionManager InteractionManager;
-        
+        private InteractionManager InteractionManager;
+
+        public void Start()
+        {
+            InteractionManager = GameObject.FindWithTag("GameMain").GetComponent<InteractionManager>();
+        }
+
         private void Update()
         {
             //todo: also we prob dont need this EVERY frame, maybe just every 3 frames, and only when we can interact.
