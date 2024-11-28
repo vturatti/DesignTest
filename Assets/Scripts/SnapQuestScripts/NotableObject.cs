@@ -14,7 +14,7 @@ public class NotableObject : MonoBehaviour
     public bool IsCurrentlyDetectable = true;
     public float MaxDistanceDetectableZoomDistanceMultiplier = 1;
     public BaseCameraFocusReactor BaseCameraFocusReactor;
-    public NotableObjectService NotableObjectService;
+    private NotableObjectService NotableObjectService;
 
     public List<Collider> CameraTargetColliders = new ();
 
@@ -29,8 +29,7 @@ public class NotableObject : MonoBehaviour
     public Dictionary<string, string> ExtraData;
     public bool DontSaveScreenshotOnPictureTaken;
 
-    public PlayMakerFSM OnCaptureFSM;
-    public string FSMMessage = "Captured";
+    public PlayMakerFSM LinkedFSM;
 
     public void Awake()
     {
@@ -44,6 +43,7 @@ public class NotableObject : MonoBehaviour
 
     public void Start()
     {
+        NotableObjectService = GameObject.FindWithTag("GameMain").GetComponent<NotableObjectService>();
         if (NotableObjectService != null)
         {
             NotableObjectService.RegisterSceneNotableObject(this);
@@ -89,25 +89,19 @@ public class NotableObject : MonoBehaviour
 
     public void ExitingCameraView()
     {
-        if (BaseCameraFocusReactor != null)
-        {
-            BaseCameraFocusReactor.ExitingCameraView();
-        }
+        LinkedFSM.SendEvent("OnExitCameraFocus");
     }
 
     public void CameraToolOnTarget()
     {
-        if (BaseCameraFocusReactor != null)
-        {
-            BaseCameraFocusReactor.CameraToolOnTarget();
-        }
+        LinkedFSM.SendEvent("OnEnterCameraFocus");
     }
 
     public void SendCapturedEvent()
     {
-        if (OnCaptureFSM != null)
+        if (LinkedFSM != null)
         {
-            OnCaptureFSM.SendEvent(FSMMessage);
+            LinkedFSM.SendEvent("Captured");
         }
     }
 }
