@@ -28,8 +28,11 @@
       <Path>.git</Path>
       <Path>.idea</Path>
       <Path>DesignTest</Path>
+      <Path>ExampleBuild.app</Path>
+      <Path>ExampleBuild_BurstDebugInformation_DoNotShip</Path>
       <Path>Library</Path>
       <Path>Logs</Path>
+      <Path>SerializedBuildInfo</Path>
       <Path>Temp</Path>
       <Path>UserSettings</Path>
       <Path>obj</Path>
