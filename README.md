@@ -1,3 +1,5 @@
 # DesignTest
  
-Instructions in google doc at https://docs.google.com/document/d/1UjAVuw9xzAjCKdbulcazOZqiZp7Ix5FsmDozpMD_4TI/edit?usp=sharing
+Instructions for this test are located in the Unlisted_Games_Content_Designer_Test.pdf
+
+Best of luck, and please reach out if there are any issues or questions!
